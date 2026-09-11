@@ -1,0 +1,16 @@
+version: "3.9"
+ 
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: santamed_frontend
+    ports:
+      - "3000:80"
+    networks:
+      - santamed_net
+
+networks:
+  santamed_net:
+    driver: bridge
