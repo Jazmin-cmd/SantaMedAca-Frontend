@@ -12,7 +12,7 @@ RUN npm run build
 # -----------------------------
 # Etapa final: servidor Apache
 # -----------------------------
-FROM php:8.2-apache
+FROM php:8.4-apache
 
 # Cambiar el DocumentRoot de Apache a /var/www/html
 ENV APACHE_DOCUMENT_ROOT=/var/www/html
@@ -23,6 +23,6 @@ COPY --from=build /app/dist/ /var/www/html/
 # Habilitar mod_rewrite (útil para rutas SPA)
 RUN a2enmod rewrite
 
-EXPOSE 3000
+EXPOSE 80
 
 CMD ["apache2-foreground"]
