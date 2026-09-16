@@ -12,7 +12,7 @@ RUN npm run build
 # -----------------------------
 # Etapa final: servidor Apache
 # -----------------------------
-FROM php:8.4-apache
+FROM php:8.3-apache
 
 # Cambiar el DocumentRoot de Apache a /var/www/html
 ENV APACHE_DOCUMENT_ROOT=/var/www/html
