@@ -1,10 +1,21 @@
 import { useEffect, useState } from 'react'
 import { listarProfesionales } from '../api/profesionales'
+import Encabezado from '../components/Encabezado'
+
+const iniciales = (nombre) =>
+  nombre
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .join('')
+    .map((parte) => parte[0].toUpperCase())
 
 export default function ProfesionalesList() {
   const [profesionales, setProfesionales] = useState([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState(null)
+  const [busqueda, setBusqueda] = useState('')
+  const [especialidad, setEspecialidad] = useState('')
 
   useEffect(() => {
     listarProfesionales()
@@ -13,23 +24,65 @@ export default function ProfesionalesList() {
       .finally(() => setCargando(false))
   }, [])
 
+  const especialidades = [
+    ...new Set(profesionales.map((p) => p.especialidad?.nombre).filter(Boolean)),
+  ].sort()
+
+  const texto = busqueda.trim().toLowerCase()
+  const filtrados = profesionales.filter(
+    (p) =>
+      (!especialidad || p.especialidad?.nombre === especialidad) &&
+      (!texto || p.nombre.toLowerCase().includes(texto)),
+  )
+
   return (
-    <section className="seccion">
-      <div className="contenedor">
-        <h1>Profesionales</h1>
-        {cargando && <p>Cargando…</p>}
-        {error && <p>Error: {error.message}</p>}
-        {!cargando && !error && (
-          <ul className="lista-profesionales">
-            {profesionales.map((p) => (
-              <li key={p.id}>
-                <strong>{p.nombre}</strong>
-                <span>{p.especialidad?.nombre}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    </section>
+    <>
+      <Encabezado etiqueta="Profesionales" titulo="Encontrá a tu profesional">
+        Buscá por nombre o filtrá por especialidad.
+      </Encabezado>
+      <section className="seccion">
+        <div className="contenedor">
+          <form className="filtros" onSubmit={(e) => e.preventDefault()}>
+            <label>
+              Nombre
+              <input
+                type="search"
+                value={busqueda}
+                onChange={(e) => setBusqueda(e.target.value)}
+                placeholder="Buscar por nombre"
+              />
+            </label>
+            <label>
+              Especialidad
+              <select value={especialidad} onChange={(e) => setEspecialidad(e.target.value)}>
+                <option value="">Todas</option>
+                {especialidades.map((e) => (
+                  <option key={e} value={e}>{e}</option>
+                ))}
+              </select>
+            </label>
+          </form>
+
+          {cargando && <p className="pendiente">Cargando profesionales…</p>}
+          {error && <p>Error: {error.message}</p>}
+          {!cargando && !error && filtrados.length === 0 && (
+            <p>No se encontraron profesionales.</p>
+          )}
+          {!cargando && !error && filtrados.length > 0 && (
+            <div className="profesionales">
+              {filtrados.map((p) => (
+                <article key={p.id} className="profesional">
+                  <span className="avatar" aria-hidden="true">{iniciales(p.nombre)}</span>
+                  <div>
+                    <h3>{p.nombre}</h3>
+                    <p className="especialidad">{p.especialidad?.nombre}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+    </>
   )
 }
