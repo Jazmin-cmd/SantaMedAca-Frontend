@@ -1,83 +1,146 @@
 import { Link } from 'react-router-dom'
-import logo from '../assets/logo-santamed.png'
+import isotipo from '../assets/isotipo.png'
+import Horarios from '../components/Horarios'
+import Icono from '../components/Icono'
+import LlamadoAccion from '../components/LlamadoAccion'
+import Ola from '../components/Ola'
+import { convenios, motivos, servicios } from '../data/institucional'
 
-// Contenido tomado de docs/Reseña SANTAMED.pdf
-const valores = [
-  'Responsabilidad y profesionalidad',
-  'Honestidad y ética profesional',
-  'Orientación al cliente',
-  'Trabajo en equipo',
-  'Calidad',
-  'Eficacia',
-  'Eficiencia',
-  'Innovación',
+const accesos = [
+  { to: '/servicios', texto: 'Servicios', icono: 'consultorios' },
+  { to: '/profesionales', texto: 'Buscar profesional', icono: 'usuarios' },
+  { to: '/contacto#horarios', texto: 'Horarios', icono: 'reloj' },
+  { to: '/contacto', texto: 'Contacto', icono: 'telefono' },
+]
+
+const cifras = [
+  { valor: '10', texto: 'consultorios' },
+  { valor: '2024', texto: 'año de fundación' },
+  { valor: '4', texto: 'áreas de servicio' },
 ]
 
 export default function Inicio() {
   return (
     <>
       <section className="hero">
-        <div className="contenedor">
+        <div className="contenedor hero-grilla">
           <div className="hero-texto">
-            <h1>Atención médica integral, accesible y de calidad</h1>
-            <p className="eslogan">Tu salud, nuestra prioridad.</p>
-            <Link className="boton" to="/profesionales">Conocé a nuestros profesionales</Link>
+            <p className="etiqueta">Policlínica en Asunción</p>
+            <h1>
+              Cuidamos tu salud de forma <span className="resaltado">integral</span>
+            </h1>
+            <p className="bajada">
+              Consultas en distintas especialidades, ecografía, radiografía y laboratorio,
+              con una atención cercana y de calidad.
+            </p>
+            <div className="acciones">
+              <Link className="boton" to="/profesionales">
+                Ver profesionales <Icono nombre="flecha" />
+              </Link>
+              <Link className="boton boton-secundario" to="/servicios">Nuestros servicios</Link>
+            </div>
           </div>
-          <img src={logo} alt="" />
+
+          <div className="hero-visual" aria-hidden="true">
+            <div className="hero-circulo">
+              <img src={isotipo} alt="" />
+            </div>
+            <div className="chip chip-1">
+              <strong>10</strong> consultorios
+            </div>
+            <div className="chip chip-2">
+              <span className="punto" /> Santa Clara Prepaga
+            </div>
+          </div>
         </div>
+        <Ola />
       </section>
+
+      <nav className="accesos contenedor" aria-label="Accesos rápidos">
+        {accesos.map((a) => (
+          <Link key={a.to} to={a.to} className="acceso revelar">
+            <Icono nombre={a.icono} />
+            <span>{a.texto}</span>
+            <Icono nombre="flecha" className="icono acceso-flecha" />
+          </Link>
+        ))}
+      </nav>
 
       <section className="seccion">
         <div className="contenedor">
-          <h2>Quiénes somos</h2>
-          <p>
-            SantaMed nació en 2024 en Asunción, como una iniciativa de la familia Salomón
-            Harrison, con el propósito de brindar atención médica integral, accesible y de
-            calidad. Iniciamos como policlínica con tres consultorios de distintas
-            especialidades, además de servicios de ecografía y prestaciones tercerizadas de
-            radiografía y laboratorio.
-          </p>
-          <p>
-            En 2025, ante el crecimiento de la demanda, ampliamos nuestra infraestructura de
-            tres a diez consultorios e incorporamos nuevos servicios. Atendemos principalmente
-            a beneficiarios de Santa Clara Medicina Prepaga, consolidándonos como un centro de
-            referencia para su red asistencial.
-          </p>
-        </div>
-      </section>
-
-      <section className="seccion seccion-alterna">
-        <div className="contenedor">
-          <div className="tarjetas">
-            <article className="tarjeta">
-              <h3>Misión</h3>
-              <p>
-                Brindar atención médica integral y servicios de la más alta calidad para
-                mejorar la salud y el bienestar de nuestros pacientes.
-              </p>
-            </article>
-            <article className="tarjeta">
-              <h3>Visión</h3>
-              <p>
-                Ser líderes en el campo de la salud, reconocidos por nuestra excelencia en
-                diagnóstico y tratamiento, así como por nuestro compromiso con la innovación y
-                mejora continua.
-              </p>
-            </article>
+          <div className="titulo-seccion revelar">
+            <p className="etiqueta">Servicios</p>
+            <h2>Todo lo que necesitás, en un solo lugar</h2>
           </div>
-        </div>
-      </section>
-
-      <section className="seccion">
-        <div className="contenedor">
-          <h2>Nuestros valores</h2>
-          <ul className="valores">
-            {valores.map((v) => (
-              <li key={v}>{v}</li>
+          <div className="bento">
+            {servicios.map((s, i) => (
+              <Link
+                key={s.id}
+                to={`/servicios#${s.id}`}
+                className={`bento-item revelar${i === 0 ? ' bento-destacado' : ''}`}
+              >
+                <span className="bento-icono"><Icono nombre={s.id} /></span>
+                <h3>{s.nombre}</h3>
+                <p>{s.descripcion}</p>
+                <span className="mas">Ver más <Icono nombre="flecha" /></span>
+              </Link>
             ))}
-          </ul>
+          </div>
         </div>
       </section>
+
+      <section className="seccion seccion-oscura">
+        <Ola invertida />
+        <div className="contenedor">
+          <div className="titulo-seccion revelar">
+            <p className="etiqueta">¿Por qué SantaMed?</p>
+            <h2>Una atención que crece con vos</h2>
+          </div>
+          <div className="cifras">
+            {cifras.map((c) => (
+              <div key={c.texto} className="cifra revelar">
+                <strong>{c.valor}</strong>
+                <span>{c.texto}</span>
+              </div>
+            ))}
+          </div>
+          <div className="motivos">
+            {motivos.map((m, i) => (
+              <article key={m.titulo} className="motivo revelar">
+                <span className="motivo-numero">0{i + 1}</span>
+                <h3>{m.titulo}</h3>
+                <p>{m.texto}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+        <Ola />
+      </section>
+
+      <section className="seccion">
+        <div className="contenedor dos-columnas">
+          <div className="revelar">
+            <p className="etiqueta">Convenios</p>
+            <h2>Trabajamos con tu prepaga</h2>
+            {convenios.map((c) => (
+              <div key={c.nombre} className="convenio">
+                <span className="punto" />
+                <div>
+                  <h3>{c.nombre}</h3>
+                  <p>{c.descripcion}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="revelar">
+            <p className="etiqueta">Horarios</p>
+            <h2>Cuándo atendemos</h2>
+            <Horarios />
+          </div>
+        </div>
+      </section>
+
+      <LlamadoAccion />
     </>
   )
 }
