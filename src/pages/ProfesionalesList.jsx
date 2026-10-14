@@ -13,19 +13,23 @@ export default function ProfesionalesList() {
       .finally(() => setCargando(false))
   }, [])
 
-  if (cargando) return <p>Cargando…</p>
-  if (error) return <p>Error: {error.message}</p>
-
   return (
-    <section>
-      <h1>Profesionales</h1>
-      <ul>
-        {profesionales.map((p) => (
-          <li key={p.id}>
-            <strong>{p.nombre}</strong> — {p.especialidad?.nombre}
-          </li>
-        ))}
-      </ul>
+    <section className="seccion">
+      <div className="contenedor">
+        <h1>Profesionales</h1>
+        {cargando && <p>Cargando…</p>}
+        {error && <p>Error: {error.message}</p>}
+        {!cargando && !error && (
+          <ul className="lista-profesionales">
+            {profesionales.map((p) => (
+              <li key={p.id}>
+                <strong>{p.nombre}</strong>
+                <span>{p.especialidad?.nombre}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </section>
   )
 }

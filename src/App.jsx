@@ -1,5 +1,6 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
+import Inicio from './pages/Inicio'
 import ProfesionalesList from './pages/ProfesionalesList'
 
 export default function App() {
@@ -7,7 +8,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<Navigate to="/profesionales" />} />
+          <Route path="/" element={<Inicio />} />
           <Route path="/profesionales" element={<ProfesionalesList />} />
         </Route>
       </Routes>
