@@ -10,17 +10,15 @@ export default function Horarios() {
       <table className="tabla">
         <thead>
           <tr>
-            <th>Servicio</th>
             <th>Días</th>
             <th>Horario</th>
           </tr>
         </thead>
         <tbody>
           {horarios.map((h) => (
-            <tr key={h.servicio + h.dias}>
-              <td>{h.servicio}</td>
-              <td>{h.dias}</td>
-              <td>{h.horario}</td>
+            <tr key={h.dia} className={h.cerrado ? 'horario-cerrado' : undefined}>
+              <td>{h.dia}</td>
+              <td>{h.hora}</td>
             </tr>
           ))}
         </tbody>

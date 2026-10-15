@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
-import isotipo from '../assets/isotipo.png'
-import logo from '../assets/logo-santamed.png'
+import logo from '../assets/logo-santamed-full-color.svg'
+import logoBlanco from '../assets/logo-santamed-blanco.svg'
 import { contacto, empresa } from '../data/institucional'
 import DatoPendiente from './DatoPendiente'
+import Instagram from './Instagram'
+import Mapa from './Mapa'
+import Icono from './Icono'
 
 const enlaces = [
   { to: '/', texto: 'Inicio', end: true },
@@ -87,14 +90,14 @@ export default function Layout() {
         <Outlet />
       </main>
 
+
       <footer className="pie">
         <div className="contenedor pie-columnas">
           <div className="pie-marca">
-            <img src={isotipo} alt="" />
-            <p className="pie-titulo">SantaMed</p>
-            <p className="eslogan">Tu salud, nuestra prioridad.</p>
+            <img src={logoBlanco} alt="SantaMed" />
           </div>
-          <div>
+
+          <div style={{ paddingLeft: '40px' }}>
             <p className="pie-titulo">Secciones</p>
             {enlaces.slice(1).map((e) => (
               <p key={e.to}>
@@ -102,13 +105,35 @@ export default function Layout() {
               </p>
             ))}
           </div>
+
           <div>
             <p className="pie-titulo">Contacto</p>
-            <p>Teléfono: <DatoPendiente valor={contacto.telefono} /></p>
-            <p>Dirección: <DatoPendiente valor={contacto.direccion} /></p>
-            <p>{contacto.ciudad}</p>
+
+            <p className="pie-dato">
+              <span className="pie-icono"><Icono nombre="telefono" /></span>
+              <DatoPendiente valor={contacto.telefono} />
+            </p>
+
+            <p className="pie-dato">
+              <span className="pie-icono"><Icono nombre="ubicacion" /></span>
+              <span>
+                <DatoPendiente valor={contacto.direccion} />
+                <br />
+                {contacto.ciudad}
+              </span>
+            </p>
+
+            <div className="pie-redes">
+              <Instagram />
+              <span>@santamed.py</span>
+            </div>
+          </div>
+
+          <div className="pie-mapa">
+            <Mapa />
           </div>
         </div>
+
         <div className="contenedor pie-legal">
           <p>© {new Date().getFullYear()} SantaMed · {empresa.razonSocial} · RUC {empresa.ruc}</p>
         </div>

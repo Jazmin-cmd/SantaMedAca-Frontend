@@ -3,15 +3,20 @@
 // actualizan en todo el sitio.
 
 export const contacto = {
-  telefono: null,
-  whatsapp: null, // solo números con código de país, ej. '595981000000'
-  email: null,
-  direccion: null,
+  telefono: "+595 973 299 010",
+  whatsapp: "595973299010", // solo números con código de país, ej. '595981000000'
+  email: "contacto@santamed.com.py",
+  direccion: "Gral. Bernardo O'Higgins y Mcal. Antonio Sucre",
   ciudad: 'Asunción, Paraguay',
+  instagram: 'https://www.instagram.com/santamed.py/',
 }
 
-// Cada fila: { servicio, dias, horario }
-export const horarios = []
+// Cada fila: { dias, horario }
+export const horarios = [
+  { dia: 'Lunes a Viernes', hora: '7:00 a 20:00 h' },
+  { dia: 'Sábado', hora: '8:00 a 12:00 h' },
+  { dia: 'Domingo', hora: 'Cerrado', cerrado: true },
+]
 
 export const servicios = [
   {

@@ -31,26 +31,29 @@ export default function Contacto() {
               </DatoPendiente>
             </p>
           </article>
+
           <article className="contacto-item revelar">
             <span className="bento-icono"><Icono nombre="whatsapp" /></span>
             <h3>WhatsApp</h3>
             <p>
-              <DatoPendiente valor={contacto.whatsapp}>
-                <a href={`https://wa.me/${contacto.whatsapp}`} target="_blank" rel="noreferrer">
-                  Escribinos por WhatsApp
-                </a>
-              </DatoPendiente>
+              <a
+                href={`https://wa.me/${contacto.whatsapp}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Escribinos por WhatsApp
+              </a>
             </p>
           </article>
+
           <article className="contacto-item revelar">
             <span className="bento-icono"><Icono nombre="correo" /></span>
             <h3>Correo</h3>
             <p>
-              <DatoPendiente valor={contacto.email}>
-                <a href={`mailto:${contacto.email}`}>{contacto.email}</a>
-              </DatoPendiente>
+              <a href={`mailto:${contacto.email}`}>{contacto.email}</a>
             </p>
           </article>
+
           <article className="contacto-item revelar">
             <span className="bento-icono"><Icono nombre="ubicacion" /></span>
             <h3>Dirección</h3>
