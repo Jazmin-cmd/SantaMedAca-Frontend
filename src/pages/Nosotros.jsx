@@ -1,6 +1,11 @@
+import fotoEscalera from '../assets/fotos/santamed-escalera.webp'
+import fotoFrente from '../assets/fotos/santamed-frente.webp'
+import fotoOficina from '../assets/fotos/santamed-oficina.webp'
+import fotoRecepcion from '../assets/fotos/santamed-recepcion.webp'
 import Encabezado from '../components/Encabezado'
-import LlamadoAccion from '../components/LlamadoAccion'
-import { valores } from '../data/institucional'
+import { TarjetaArco } from '../components/FotoArco'
+import Icono from '../components/Icono'
+import { contacto, enlaceMapa, valores } from '../data/institucional'
 
 // Contenido tomado de docs/Reseña SANTAMED.pdf
 const hitos = [
@@ -27,7 +32,16 @@ const hitos = [
 export default function Nosotros() {
   return (
     <>
-      <Encabezado etiqueta="Nosotros" titulo="Atención médica cercana, desde Asunción">
+      <Encabezado
+        etiqueta="Nosotros"
+        titulo="Atención médica cercana, desde Asunción"
+        foto={fotoEscalera}
+        fotoAlt="Recepción de SantaMed con su escalera caracol"
+        posicion="60% center"
+        tarjetas={
+          <TarjetaArco icono={<Icono nombre="check" />} rotulo="Desde 2024" dato="En Asunción" />
+        }
+      >
         Nacimos con el propósito de brindar atención médica integral, accesible y de calidad.
       </Encabezado>
 
@@ -83,7 +97,36 @@ export default function Nosotros() {
         </div>
       </section>
 
-      <LlamadoAccion />
+      <section className="seccion seccion-suave">
+        <div className="contenedor">
+          <div className="titulo-seccion revelar">
+            <p className="etiqueta">Nuestras instalaciones</p>
+            <h2>Un espacio pensado para tu comodidad</h2>
+          </div>
+          <div className="galeria">
+            <figure className="galeria-item galeria-principal revelar">
+              <img src={fotoFrente} alt="Frente del edificio de SantaMed" loading="lazy" />
+              <figcaption>Nuestro edificio</figcaption>
+            </figure>
+            <figure className="galeria-item revelar">
+              <img src={fotoRecepcion} alt="Sala de espera del Centro de Diagnóstico" loading="lazy" />
+              <figcaption>Centro de Diagnóstico</figcaption>
+            </figure>
+            <figure className="galeria-item revelar">
+              <img src={fotoOficina} alt="Oficina de atención administrativa" loading="lazy" />
+              <figcaption>Atención administrativa</figcaption>
+            </figure>
+            <div className="galeria-item galeria-dato revelar">
+              <strong>10</strong>
+              <span>consultorios para tu atención</span>
+              <a className="boton boton-chico" href={enlaceMapa} target="_blank" rel="noreferrer">
+                Cómo llegar <Icono nombre="flecha" />
+              </a>
+              <small>{contacto.direccion}</small>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   )
 }

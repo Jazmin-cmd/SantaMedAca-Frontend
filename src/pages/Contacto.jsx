@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import DatoPendiente from '../components/DatoPendiente'
+import fotoOficina from '../assets/fotos/santamed-oficina.webp'
 import Encabezado from '../components/Encabezado'
-import Horarios from '../components/Horarios'
+import FormularioContacto from '../components/FormularioContacto'
+import { TarjetaArco } from '../components/FotoArco'
 import Icono from '../components/Icono'
-import { contacto } from '../data/institucional'
+import { contacto, horarios } from '../data/institucional'
 
 export default function Contacto() {
   const { hash } = useLocation()
@@ -16,63 +17,46 @@ export default function Contacto() {
 
   return (
     <>
-      <Encabezado etiqueta="Contacto" titulo="Estamos para ayudarte">
-        Escribinos o acercate a SantaMed. Te respondemos a la brevedad.
+      <Encabezado
+        etiqueta="Contacto"
+        titulo="Estamos para ayudarte"
+        foto={fotoOficina}
+        fotoAlt="Oficina de atención de SantaMed"
+        posicion="45% center"
+        tarjetas={
+          <TarjetaArco
+            icono={<Icono nombre="reloj" />}
+            rotulo={horarios[0].dia}
+            dato={horarios[0].hora}
+          />
+        }
+      >
+        Dejanos tu mensaje y te respondemos a la brevedad.
       </Encabezado>
 
       <section className="seccion">
         <div className="contenedor contacto-grilla">
-          <article className="contacto-item revelar">
-            <span className="bento-icono"><Icono nombre="telefono" /></span>
-            <h3>Teléfono</h3>
-            <p>
-              <DatoPendiente valor={contacto.telefono}>
-                <a href={`tel:${contacto.telefono}`}>{contacto.telefono}</a>
-              </DatoPendiente>
-            </p>
-          </article>
-
-          <article className="contacto-item revelar">
-            <span className="bento-icono"><Icono nombre="whatsapp" /></span>
-            <h3>WhatsApp</h3>
-            <p>
-              <a
-                href={`https://wa.me/${contacto.whatsapp}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Escribinos por WhatsApp
-              </a>
-            </p>
-          </article>
-
-          <article className="contacto-item revelar">
-            <span className="bento-icono"><Icono nombre="correo" /></span>
-            <h3>Correo</h3>
-            <p>
-              <a href={`mailto:${contacto.email}`}>{contacto.email}</a>
-            </p>
-          </article>
-
-          <article className="contacto-item revelar">
-            <span className="bento-icono"><Icono nombre="ubicacion" /></span>
-            <h3>Dirección</h3>
-            <p>
-              <DatoPendiente valor={contacto.direccion} />
-              <br />
-              {contacto.ciudad}
-            </p>
-          </article>
-        </div>
-      </section>
-
-      <section id="horarios" className="seccion seccion-suave">
-        <div className="contenedor">
-          <div className="titulo-seccion revelar">
-            <p className="etiqueta">Horarios</p>
-            <h2>Cuándo atendemos</h2>
+          <div className="revelar">
+            <FormularioContacto />
           </div>
-          <Horarios />
+
+          <aside id="horarios" className="contacto-panel revelar">
+            <p className="etiqueta">Escribinos</p>
+            <a className="contacto-correo" href={`mailto:${contacto.email}`}>
+              <Icono nombre="correo" /> {contacto.email}
+            </a>
+            <p>Te respondemos dentro de nuestro horario de atención.</p>
+
+            <h2>Horarios de atención</h2>
+            <ul className="contacto-horarios">
+              {horarios.map((h) => (
+                <li key={h.dia} className={h.cerrado ? 'horario-cerrado' : undefined}>
+                  <span>{h.dia}</span>
+                  <strong>{h.hora}</strong>
+                </li>
+              ))}
+            </ul>
+          </aside>
         </div>
       </section>
     </>
