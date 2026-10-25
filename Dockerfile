@@ -7,7 +7,12 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
-RUN npm run build
+
+# URL de la API (la pasa docker-compose en build.args). Vite la incrusta en el
+# bundle al compilar: sin este ARG el valor se ignora y queda "undefined".
+# Si no se pasa, se descarta la variable vacía para que Vite use el .env.
+ARG VITE_API_URL
+RUN if [ -z "$VITE_API_URL" ]; then unset VITE_API_URL; fi; npm run build
 
 # -----------------------------
 # Etapa final: servidor Apache
