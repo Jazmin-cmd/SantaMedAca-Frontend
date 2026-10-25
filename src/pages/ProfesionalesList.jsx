@@ -2,13 +2,19 @@ import { useEffect, useState } from 'react'
 import { listarProfesionales } from '../api/profesionales'
 import Encabezado from '../components/Encabezado'
 
+const normalizar = (s) =>
+  (s ?? '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+
 const iniciales = (nombre) =>
-  nombre
+  (nombre ?? '')
     .split(/\s+/)
     .filter(Boolean)
     .slice(0, 2)
-    .join('')
     .map((parte) => parte[0].toUpperCase())
+    .join('')
 
 export default function ProfesionalesList() {
   const [profesionales, setProfesionales] = useState([])
@@ -28,11 +34,11 @@ export default function ProfesionalesList() {
     ...new Set(profesionales.map((p) => p.especialidad?.nombre).filter(Boolean)),
   ].sort()
 
-  const texto = busqueda.trim().toLowerCase()
+  const texto = normalizar(busqueda.trim())
   const filtrados = profesionales.filter(
     (p) =>
       (!especialidad || p.especialidad?.nombre === especialidad) &&
-      (!texto || p.nombre.toLowerCase().includes(texto)),
+      (!texto || normalizar(p.nombre).includes(texto)),
   )
 
   return (
