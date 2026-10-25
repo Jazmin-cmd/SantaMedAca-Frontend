@@ -1,9 +1,13 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
+import fotoRecepcion from '../assets/fotos/santamed-recepcion.webp'
+import Convenios from '../components/Convenios'
 import Encabezado from '../components/Encabezado'
+import { TarjetaArco } from '../components/FotoArco'
 import Icono from '../components/Icono'
 import LlamadoAccion from '../components/LlamadoAccion'
-import { convenios, servicios } from '../data/institucional'
+import Modalidad from '../components/Modalidad'
+import { servicios } from '../data/institucional'
 
 export default function Servicios() {
   const { hash } = useLocation()
@@ -15,8 +19,22 @@ export default function Servicios() {
 
   return (
     <>
-      <Encabezado etiqueta="Servicios" titulo="Atención integral en un solo lugar">
-        Consultas en distintas especialidades, estudios de imagen y análisis de laboratorio.
+      <Encabezado
+        etiqueta="Servicios"
+        titulo="Cuidamos tu salud de principio a fin"
+        foto={fotoRecepcion}
+        fotoAlt="Recepción del Centro de Diagnóstico de SantaMed"
+        posicion="30% center"
+        tarjetas={
+          <TarjetaArco
+            icono={<Icono nombre="ecografia" />}
+            rotulo="Diagnóstico"
+            dato={`${servicios.length} áreas de servicio`}
+          />
+        }
+      >
+        Consultas en distintas especialidades y ecografía en SantaMed, más radiografía y
+        laboratorio con prestadores asociados.
       </Encabezado>
 
       <section className="seccion">
@@ -27,8 +45,10 @@ export default function Servicios() {
               <span className="bento-icono"><Icono nombre={s.id} /></span>
               <div>
                 <h2>{s.nombre}</h2>
+                <Modalidad asociado={s.asociado} />
                 <p>{s.descripcion}</p>
               </div>
+              <img src={s.foto} alt={s.fotoAlt} className="servicio-foto" loading="lazy" />
             </article>
           ))}
         </div>
@@ -36,19 +56,9 @@ export default function Servicios() {
 
       <section className="seccion seccion-suave">
         <div className="contenedor">
-          <div className="titulo-seccion revelar">
-            <p className="etiqueta">Convenios</p>
-            <h2>Trabajamos con tu prepaga</h2>
+          <div className="revelar">
+            <Convenios />
           </div>
-          {convenios.map((c) => (
-            <div key={c.nombre} className="convenio revelar">
-              <span className="punto" />
-              <div>
-                <h3>{c.nombre}</h3>
-                <p>{c.descripcion}</p>
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 

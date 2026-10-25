@@ -9,10 +9,10 @@ const trazos = {
   ),
   ecografia: (
     <>
-      <path d="M4 20a8 8 0 0 1 16 0" />
-      <path d="M7.5 20a4.5 4.5 0 0 1 9 0" />
-      <path d="M12 4v8" />
-      <path d="M9 7l3-3 3 3" />
+      <path d="M10 2h4a1 1 0 0 1 1 1v6H9V3a1 1 0 0 1 1-1z" />
+      <path d="M8 9h8l-1 4H9z" />
+      <path d="M8.5 16.5a5 5 0 0 0 7 0" />
+      <path d="M6 19.5a8.5 8.5 0 0 0 12 0" />
     </>
   ),
   radiografia: (
@@ -62,6 +62,12 @@ const trazos = {
     </>
   ),
   flecha: <path d="M5 12h14M13 6l6 6-6 6" />,
+  check: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M8 12.5l2.5 2.5L16 9.5" />
+    </>
+  ),
 }
 
 export default function Icono({ nombre, className = 'icono' }) {

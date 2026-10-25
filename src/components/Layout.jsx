@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import logo from '../assets/logo-santamed-full-color.svg'
 import logoBlanco from '../assets/logo-santamed-blanco.svg'
-import { contacto, empresa } from '../data/institucional'
+import { campania, contacto, empresa } from '../data/institucional'
 import DatoPendiente from './DatoPendiente'
+import FlyerCampania from './FlyerCampania'
 import Instagram from './Instagram'
 import Mapa from './Mapa'
 import Icono from './Icono'
+import WhatsappFlotante from './WhatsappFlotante'
 
 const enlaces = [
   { to: '/', texto: 'Inicio', end: true },
@@ -19,6 +21,7 @@ const enlaces = [
 export default function Layout() {
   const [menuAbierto, setMenuAbierto] = useState(false)
   const [conScroll, setConScroll] = useState(false)
+  const [flyerAbierto, setFlyerAbierto] = useState(Boolean(campania))
   const { pathname, hash } = useLocation()
 
   // Volver arriba al cambiar de página (salvo que se pida un ancla)
@@ -79,9 +82,6 @@ export default function Layout() {
                 {e.texto}
               </NavLink>
             ))}
-            <Link to="/profesionales" className="boton boton-chico" onClick={cerrarMenu}>
-              Agendar consulta
-            </Link>
           </nav>
         </div>
       </header>
@@ -138,6 +138,9 @@ export default function Layout() {
           <p>© {new Date().getFullYear()} SantaMed · {empresa.razonSocial} · RUC {empresa.ruc}</p>
         </div>
       </footer>
+
+      {campania && <FlyerCampania alCerrar={() => setFlyerAbierto(false)} />}
+      <WhatsappFlotante pausado={flyerAbierto} />
     </>
   )
 }

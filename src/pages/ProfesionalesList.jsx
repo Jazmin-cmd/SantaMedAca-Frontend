@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import { listarProfesionales } from '../api/profesionales'
 import Encabezado from '../components/Encabezado'
+import { TarjetaArco } from '../components/FotoArco'
+import Icono from '../components/Icono'
+import { enlaceWhatsapp } from '../data/institucional'
 
 const normalizar = (s) =>
   (s ?? '')
@@ -8,10 +11,11 @@ const normalizar = (s) =>
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
 
+// Iniciales del nombre sin el título (Dr., Dra., Lic.)
 const iniciales = (nombre) =>
   (nombre ?? '')
     .split(/\s+/)
-    .filter(Boolean)
+    .filter((parte) => parte && !parte.endsWith('.'))
     .slice(0, 2)
     .map((parte) => parte[0].toUpperCase())
     .join('')
@@ -22,13 +26,23 @@ export default function ProfesionalesList() {
   const [error, setError] = useState(null)
   const [busqueda, setBusqueda] = useState('')
   const [especialidad, setEspecialidad] = useState('')
+  const [intento, setIntento] = useState(0)
 
   useEffect(() => {
     listarProfesionales()
       .then((r) => setProfesionales(r.data))
-      .catch(setError)
+      .catch((e) => {
+        console.error(e) // el detalle técnico queda en consola, no en pantalla
+        setError(e)
+      })
       .finally(() => setCargando(false))
-  }, [])
+  }, [intento])
+
+  const reintentar = () => {
+    setCargando(true)
+    setError(null)
+    setIntento((n) => n + 1)
+  }
 
   const especialidades = [
     ...new Set(profesionales.map((p) => p.especialidad?.nombre).filter(Boolean)),
@@ -43,7 +57,18 @@ export default function ProfesionalesList() {
 
   return (
     <>
-      <Encabezado etiqueta="Profesionales" titulo="Encontrá a tu profesional">
+      <Encabezado
+        etiqueta="Profesionales"
+        titulo="Encontrá a tu profesional"
+        tarjetas={
+          <TarjetaArco
+            icono={<Icono nombre="usuarios" />}
+            rotulo="Nuestro equipo"
+            dato={profesionales.length ? `${profesionales.length} profesionales` : 'Especialistas'}
+            lado="derecha"
+          />
+        }
+      >
         Buscá por nombre o filtrá por especialidad.
       </Encabezado>
       <section className="seccion">
@@ -70,7 +95,25 @@ export default function ProfesionalesList() {
           </form>
 
           {cargando && <p className="pendiente">Cargando profesionales…</p>}
-          {error && <p>Error: {error.message}</p>}
+          {error && (
+            <div className="aviso-error" role="alert">
+              <h2>No pudimos cargar los profesionales</h2>
+              <p>Probá de nuevo en unos segundos o escribinos por WhatsApp y te ayudamos.</p>
+              <div className="acciones">
+                <button type="button" className="boton" onClick={reintentar}>
+                  Reintentar
+                </button>
+                <a
+                  className="boton boton-secundario"
+                  href={enlaceWhatsapp('Hola SantaMed, quisiera consultar por un profesional.')}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Icono nombre="whatsapp" /> Escribinos por WhatsApp
+                </a>
+              </div>
+            </div>
+          )}
           {!cargando && !error && filtrados.length === 0 && (
             <p>No se encontraron profesionales.</p>
           )}
