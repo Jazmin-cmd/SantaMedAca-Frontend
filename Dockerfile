@@ -14,15 +14,17 @@ RUN npm run build
 # -----------------------------
 FROM php:8.3-apache
 
-# Cambiar el DocumentRoot de Apache a /var/www/html
-ENV APACHE_DOCUMENT_ROOT=/var/www/html
-
-# Copiar los archivos compilados de Vite al DocumentRoot
 COPY --from=build /app/dist/ /var/www/html/
 
-# Habilitar mod_rewrite (útil para rutas SPA)
 RUN a2enmod rewrite
 
-EXPOSE 80
+RUN printf '<Directory /var/www/html>\n\
+    Options -Indexes\n\
+    AllowOverride None\n\
+    Require all granted\n\
+    FallbackResource /index.html\n\
+</Directory>\n' > /etc/apache2/conf-available/spa.conf \
+ && a2enconf spa
 
+EXPOSE 80
 CMD ["apache2-foreground"]
