@@ -9,13 +9,13 @@ import fotoConsultorios from '../assets/fotos/consultorios.webp'
 import fotoEcografia from '../assets/fotos/ecografia.webp'
 import fotoRadiografia from '../assets/fotos/radiografia.webp'
 import fotoLaboratorio from '../assets/fotos/laboratorio.webp'
-import flyerOctubreRosa from '../assets/campanias/octubre-rosa.jpeg'
+import flyerNoviembreAzul from '../assets/campanias/noviembre-azul.jpeg'
 
 // Campaña que se muestra como flyer al entrar al sitio. Para quitarla o
 // cambiarla, editar este objeto (o poner `campania = null`).
 export const campania = {
-  imagen: flyerOctubreRosa,
-  alt: 'En este #OctubreRosa nos toca cuidarnos. La detección temprana puede marcar la diferencia.',
+  imagen: flyerNoviembreAzul,
+  alt: 'Sumate al azul. Tomar el control de tu salud a tiempo es la mejor decisión para tu bienestar y el de los tuyos.',
 }
 
 export const contacto = {
